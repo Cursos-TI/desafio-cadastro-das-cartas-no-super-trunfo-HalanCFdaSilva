@@ -2,11 +2,11 @@
 
 char estadoCarta1, codigoCarta1[4] = {'0','0','0','\0'}, nomeCidadeCarta1[50];
 int populacaoCarta1, pontosTuristicosCarta1;
-float areaCarta1, pibCarta1, densidadePopulacionalCarta1, pibPerCapitaCarta1;
+float areaCarta1, pibCarta1, densidadePopulacionalCarta1, pibPerCapitaCarta1, superPoderCarta1;
 
 char estadoCarta2, codigoCarta2[4] = {'0','0','0','\0'}, nomeCidadeCarta2[50];
 int populacaoCarta2, pontosTuristicosCarta2;
-float areaCarta2, pibCarta2, densidadePopulacionalCarta2, pibPerCapitaCarta2;
+float areaCarta2, pibCarta2, densidadePopulacionalCarta2, pibPerCapitaCarta2, superPoderCarta2;
 
 // função definida junto as funções de impressão
 void imprimeTexto();
@@ -37,6 +37,12 @@ char pegaChar(char descricao[]) {
     return valor;
 }
 
+void generateSuperPoderCarta1() {
+    float superPoderPositivoInt = (float) (populacaoCarta1 + pontosTuristicosCarta1);
+    float superPoderPositivoFloat = areaCarta1 + pibCarta1 + pibPerCapitaCarta1;
+    superPoderCarta1 =superPoderPositivoInt + superPoderPositivoFloat - densidadePopulacionalCarta1;
+}
+
 void pegaCarta1() {
     estadoCarta1 = pegaChar("Digite uma letra entre A e H representando o estado:");
 
@@ -62,6 +68,15 @@ void pegaCarta1() {
     densidadePopulacionalCarta1 = ((float)populacaoCarta1)/areaCarta1;
 
     pibPerCapitaCarta1 = pibCarta1/((float)populacaoCarta1);
+
+    generateSuperPoderCarta1();
+}
+
+
+void generateSuperPoderCarta2() {
+    float superPoderPositivoInt = (float) (populacaoCarta2 + pontosTuristicosCarta2);
+    float superPoderPositivoFloat = areaCarta2 + pibCarta2 + pibPerCapitaCarta2;
+    superPoderCarta2 =superPoderPositivoInt + superPoderPositivoFloat - densidadePopulacionalCarta2;
 }
 
 void pegaCarta2() {
@@ -89,6 +104,7 @@ void pegaCarta2() {
     densidadePopulacionalCarta2 = ((float)populacaoCarta2)/areaCarta2;
 
     pibPerCapitaCarta2 = pibCarta2/((float)populacaoCarta2);
+    generateSuperPoderCarta2();
 }
 
 void pegaCartas() {
@@ -114,6 +130,11 @@ void imprimeTexto(char  descricao[]) {
     printf(descricao);
     printf("\n");
 }
+
+void pulaDuasLinhas() {
+    printf("\n\n");
+}
+
 void inicio_jogo(void) {
 
     printf("Obs: Este jogo de Super Trunfo! é o Super Trunfo! CIDADES, não confunda com qualquer um dos outros milhões de Super Trunfo! disponivel no mercado.");
@@ -123,12 +144,12 @@ void inicio_jogo(void) {
     printf("Nesse Jogo você digita informações referentes a duas cartas, nesse caso duas cidades, \n"
         "e no fim nós vamos simplesmente mostrar as informações dessas scartas.\n");
     printf("Mas só que com um layout bonito.");
+    pulaDuasLinhas();
+    printf("Update: Agora o jogo vai comparar as duas cartas e dizer qual carta venceu em cada uma \n"
+           " das categorias numéricas, mas calcular quem fez mais pontos, isso é com vocês.");
 
 }
 
-void pulaDuasLinhas() {
-    printf("\n\n");
-}
 
 void imprimeCarta1() {
     // inicio imprimir carta 1
@@ -165,6 +186,27 @@ void fimJogo(void) {
 }
 // fim das funções para imprimir informações na tela
 
+//inicio funções de comparação
+
+void imprimeVencedor(char categoria[], unsigned short int comparacaoCartas) {
+    unsigned short int vencedor = 2;
+    if (comparacaoCartas) {
+        vencedor = 1;
+    }
+    printf("%s: Carta %d venceu (%d)\n",categoria,vencedor,comparacaoCartas);
+}
+
+void comparaCartas() {
+    imprimeTexto("Comparação de Cartas:");
+    imprimeVencedor("População",populacaoCarta1>populacaoCarta2);
+    imprimeVencedor("Área",areaCarta1>areaCarta2);
+    imprimeVencedor("PIB",pibCarta1>pibCarta2);
+    imprimeVencedor("Pontos Turísticos",pontosTuristicosCarta1>pontosTuristicosCarta2);
+    imprimeVencedor("Densidade Populacional",densidadePopulacionalCarta1>densidadePopulacionalCarta2);
+    imprimeVencedor("PIB per Capita",pibPerCapitaCarta1>pibPerCapitaCarta2);
+    imprimeVencedor("Super Pode",superPoderCarta1>superPoderCarta2);
+
+}
 int main() {
 
     // Inicio Jogo
@@ -182,8 +224,11 @@ int main() {
     // Dá espaço entre as cartas
     pulaDuasLinhas();
     imprimeCarta2();
-
 // Fim Impressão
+
+    pulaDuasLinhas();
+    comparaCartas();
+
     fimJogo();
 
     return 0;
