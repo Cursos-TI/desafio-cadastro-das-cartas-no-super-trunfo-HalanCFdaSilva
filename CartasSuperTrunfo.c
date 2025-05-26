@@ -171,8 +171,8 @@ void imprimeCarta2() {
     printf("Código: %s\n",codigoCarta2);
     printf("Nome da Cidade: %s",nomeCidadeCarta2);
     printf("População: %d\n",populacaoCarta2);
-    printf("Área: %f km²\n",areaCarta2);
-    printf("PIB: %f bilhões de reais\n",pibCarta2);
+    printf("Área: %.2f km²\n",areaCarta2);
+    printf("PIB: %.2f bilhões de reais\n",pibCarta2);
     printf("Número de Pontos Turísticos: %d \n",pontosTuristicosCarta2);
     printf("Densidade Populacional: %.2f hab/km² \n",densidadePopulacionalCarta2);
     printf("PIB per Capita: %.2f reais",pibPerCapitaCarta2);
@@ -189,10 +189,7 @@ void fimJogo(void) {
 //inicio funções de comparação
 
 void imprimeVencedor(char categoria[], unsigned short int comparacaoCartas) {
-    unsigned short int vencedor = 2;
-    if (comparacaoCartas) {
-        vencedor = 1;
-    }
+    unsigned short int vencedor = (comparacaoCartas==0) + 1;
     printf("%s: Carta %d venceu (%d)\n",categoria,vencedor,comparacaoCartas);
 }
 
