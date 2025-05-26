@@ -1,12 +1,17 @@
 #include <stdio.h>
 
+char estadoCarta1, codigoCarta1[4] = {'0','0','0','\0'}, nomeCidadeCarta1[50];
+int populacaoCarta1, pontosTuristicosCarta1;
+float areaCarta1, pibCarta1, densidadePopulacionalCarta1, pibPerCapitaCarta1;
 
+char estadoCarta2, codigoCarta2[4] = {'0','0','0','\0'}, nomeCidadeCarta2[50];
+int populacaoCarta2, pontosTuristicosCarta2;
+float areaCarta2, pibCarta2, densidadePopulacionalCarta2, pibPerCapitaCarta2;
 
+// função definida junto as funções de impressão
+void imprimeTexto();
 
-void imprimeTexto(char  descricao[]) {
-    printf(descricao);
-    printf("\n");
-};
+// funções abaixo servem para receber as informações do usuário
 
 int pegaInt(char descricao[]) {
     int valor;
@@ -32,8 +37,83 @@ char pegaChar(char descricao[]) {
     return valor;
 }
 
+void pegaCarta1() {
+    estadoCarta1 = pegaChar("Digite uma letra entre A e H representando o estado:");
 
+    /*Pega os dados referentes ao código da carta
+     *Pega somente os dados referentes ao último número do código
+     * O segundo carácter é sempre 0 */
+    codigoCarta1[2] = pegaChar("Digite um número entre 1 e 4 representando o último caracter do código:");
+    //O primeiro carácter é o estado da carta então só cópia ele para a posição 0 do código
+    codigoCarta1[0] = estadoCarta1;
 
+    printf("Digite o nome da cidade: \n");
+    fflush(stdin);
+    fgets(nomeCidadeCarta1, 50, stdin);
+
+    populacaoCarta1 = pegaInt("Digite o tamanho da população da cidade:");
+
+    areaCarta1 = pegaFloat("Digite a área total da cidade em km²: ");
+
+    pibCarta1 = pegaFloat("Digite o PIB da cidade: ");
+
+    pontosTuristicosCarta1 = pegaInt("Digite o numero de pontos Turisticos na cidade:");
+
+    densidadePopulacionalCarta1 = ((float)populacaoCarta1)/areaCarta1;
+
+    pibPerCapitaCarta1 = pibCarta1/((float)populacaoCarta1);
+}
+
+void pegaCarta2() {
+    estadoCarta2 = pegaChar("Digite uma letra entre A e H representando o estado:");
+
+    /*Pega os dados referentes ao código da carta
+     *Pega somente os dados referentes ao último número do código
+     * O segundo carácter é sempre 0 */
+    codigoCarta2[2] = pegaChar("Digite um número entre 1 e 4 representando o último caracter do código:");
+    //O primeiro carácter é o estado da carta então só cópia ele para a posição 0 do código
+    codigoCarta2[0] = estadoCarta2;
+
+    printf("Digite o nome da cidade: \n");
+    fflush(stdin);
+    fgets(nomeCidadeCarta2, 50, stdin);
+
+    populacaoCarta2 = pegaInt("Digite o tamanho da população da cidade:");
+
+    areaCarta2 = pegaFloat("Digite a área total da cidade em km²: ");
+
+    pibCarta2 = pegaFloat("Digite o PIB da cidade: ");
+
+    pontosTuristicosCarta2 = pegaInt("Digite o numero de pontos Turisticos na cidade:");
+
+    densidadePopulacionalCarta2 = ((float)populacaoCarta2)/areaCarta2;
+
+    pibPerCapitaCarta2 = pibCarta2/((float)populacaoCarta2);
+}
+
+void pegaCartas() {
+
+    // inicio receber dados carta 1
+    printf("Primeiro digite os dados referentes a primeira carta:\n\n");
+    pegaCarta1();
+    // Fim receber dados carta1
+
+    // Dá espaço entre as cartas
+    printf("\n\n");
+
+    // inicio receber dados carta 2
+    printf("Agora digite os dados referentes a segunda carta:\n\n");
+    pegaCarta2();
+    // Fim receber dados carta2
+    // Fim Recebimento de cartas
+}
+// Função acima é a última usada para pegar informações do usuário
+
+// funções abaixo servem para imprimir dados do jogo
+void imprimeTexto(char  descricao[]) {
+    printf(descricao);
+    printf("\n");
+}
 void inicio_jogo(void) {
 
     printf("Obs: Este jogo de Super Trunfo! é o Super Trunfo! CIDADES, não confunda com qualquer um dos outros milhões de Super Trunfo! disponivel no mercado.");
@@ -50,79 +130,7 @@ void pulaDuasLinhas() {
     printf("\n\n");
 }
 
-
-void fimJogo(void) {
-    pulaDuasLinhas();
-    printf("Fim do jogo:\n");
-    printf("Foi um jogo divertido.");
-};
-
-int main() {
-
-    // Inicio Jogo
-    inicio_jogo();
-
-    printf("Vamos começar o jogo:\n");
-
-    // inicio receber dados carta 1
-    printf("Primeiro digite os dados referentes a primeira carta:\n\n");
-
-    char estadoCarta1 = pegaChar("Digite uma letra entre A e H representando o estado:");
-    /*Pega os dados referentes ao código da carta
-     *Pega somente os dados referentes ao último número do código
-     * O segundo carácter é sempre 0 */
-    char codigoCarta1[4] = {'0','0','0','\0'};
-    codigoCarta1[3] = pegaChar("Digite um número entre 1 e 4 representando o último caracter do código:");
-    //O primeiro carácter é o estado da carta então só cópia ele para a posição 0 do código
-    codigoCarta1[0] = estadoCarta1;
-    char  nomeCidadeCarta1[50];
-    printf("Digite o nome da cidade: \n");
-    fflush(stdin);
-    fgets(nomeCidadeCarta1, 50, stdin);
-    int populacaoCarta1 = pegaInt("Digite o tamanho da população da cidade:");
-    float areaCarta1 = pegaFloat("Digite a área total da cidade em km²: ");
-    float pibCarta1 = pegaFloat("Digite o PIB da cidade: ");
-    int pontosTuristicosCarta1 = pegaInt("Digite o numero de pontos Turisticos na cidade:");
-    float densidadePopulacionalCarta1 = ((float)populacaoCarta1)/areaCarta1;
-    float pibPerCapitaCarta1 = pibCarta1/((float)populacaoCarta1);
-    // Fim receber dados carta1
-
-// Dá espaço entre as cartas
-    pulaDuasLinhas();
-
-    // inicio receber dados carta 2
-    printf("Agora digite os dados referentes a segunda carta:\n\n");
-
-
-    char estadoCarta2 = pegaChar("Digite uma letra entre A e H representando o estado:");
-    /*Pega os dados referentes ao código da carta
-     *Pega somente os dados referentes ao último número do código
-     * O segundo carácter é sempre 0 */
-    char codigoCarta2[4] = {'0','0','0','\0'};
-    codigoCarta1[3] = pegaChar("Digite um número entre 1 e 4 representando o último caracter do código:");
-    //O primeiro carácter é o estado da carta então só cópia ele para a posição 0 do código
-    codigoCarta1[0] = estadoCarta1;
-    char  nomeCidadeCarta2[50];
-    printf("Digite o nome da cidade: \n");
-    fflush(stdin);
-    fgets(nomeCidadeCarta2, 50, stdin);
-    int populacaoCarta2 = pegaInt("Digite o tamanho da população da cidade:");
-    float areaCarta2 = pegaFloat("Digite a área total da cidade em km²: ");
-    float pibCarta2 = pegaFloat("Digite o PIB da cidade: ");
-    int pontosTuristicosCarta2 = pegaInt("Digite o numero de pontos Turisticos na cidade:");
-    float densidadePopulacionalCarta2 = ((float)populacaoCarta2)/areaCarta2;
-    float pibPerCapitaCarta2 = pibCarta2/((float)populacaoCarta2);
-    // Fim receber dados carta2
-// Fim Recebimento de cartas
-
-
-    // Dá espaço entre o recebimento de cartas e a impressão
-    printf("\n\n");
-
-
-// Inicio Impressão
-    printf("Agora vamos imprimir as Cartas com um layout bonito.\n\n");
-
+void imprimeCarta1() {
     // inicio imprimir carta 1
     printf("Carta1:\n");
     printf("Estado: %c\n",estadoCarta1);
@@ -135,11 +143,8 @@ int main() {
     printf("Densidade Populacional: %.2f hab/km²\n",densidadePopulacionalCarta1);
     printf("PIB per Capita: %.2f reais",pibPerCapitaCarta1);
     //Fim imprimir carta 1
-
-    // Dá espaço entre as cartas
-pulaDuasLinhas();
-
-    // inicio imprimir carta 2
+}
+void imprimeCarta2() {
     printf("Carta2:\n");
     printf("Estado: %c\n",estadoCarta2);
     printf("Código: %s\n",codigoCarta2);
@@ -150,8 +155,34 @@ pulaDuasLinhas();
     printf("Número de Pontos Turísticos: %d \n",pontosTuristicosCarta2);
     printf("Densidade Populacional: %.2f hab/km² \n",densidadePopulacionalCarta2);
     printf("PIB per Capita: %.2f reais",pibPerCapitaCarta2);
+}
 
-    //Fim imprimir carta 2
+
+void fimJogo(void) {
+    pulaDuasLinhas();
+    printf("Fim do jogo:\n");
+    printf("Foi um jogo divertido.");
+}
+// fim das funções para imprimir informações na tela
+
+int main() {
+
+    // Inicio Jogo
+    inicio_jogo();
+
+    printf("Vamos começar o jogo:\n");
+    pegaCartas();//PegaDadosCartas.c
+
+    // Dá espaço entre o recebimento de cartas e a impressão
+    pulaDuasLinhas();
+
+// Inicio Impressão
+    printf("Agora vamos imprimir as Cartas com um layout bonito.\n\n");
+    imprimeCarta1();
+    // Dá espaço entre as cartas
+    pulaDuasLinhas();
+    imprimeCarta2();
+
 // Fim Impressão
     fimJogo();
 
