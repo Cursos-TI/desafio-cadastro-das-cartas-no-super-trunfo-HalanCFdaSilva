@@ -315,21 +315,21 @@ void compararCartas() {
     int categoriaEscolhida1, valor1Carta1, valor1Carta2;
     char categoria1[20],categoria2[20];
     int categoriaEscolhida2, valor2Carta1, valor2Carta2;
-    
+    printf("Jogador 1 selecione a primeira categoria:\n");
     categoriaEscolhida1 = selecionaCategoriaComparacao();
     pulaDuasLinhas();
     selecionarCartas(categoriaEscolhida1, &valor1Carta1, &valor1Carta2, &categoria1);
     compara_categoria(categoria1,valor1Carta1, valor1Carta2);
 
     pulaDuasLinhas();
-
+    printf("Jogador 2 selecione a segunda categoria:\n");
     categoriaEscolhida2 = selecionaCategoriaComparacao();
     pulaDuasLinhas();
     selecionarCartas(categoriaEscolhida2, &valor2Carta1, &valor2Carta2, &categoria2);
     compara_categoria(categoria2,valor2Carta1, valor2Carta2);
     pulaDuasLinhas();
     
-    printf("Iniciando categoria maluca: \n");
+    printf("Aguarde! Iniciando categoria maluca: \n");
     sleep(2);
     compara_categoria("Categoria Maluca",valor1Carta1+valor2Carta1,valor1Carta2+valor2Carta2);
 
