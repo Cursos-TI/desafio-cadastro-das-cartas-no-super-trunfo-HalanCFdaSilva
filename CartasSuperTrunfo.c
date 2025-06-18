@@ -75,6 +75,7 @@ void pegaCarta1() {
     printf("Digite o nome da cidade: \n");
     fflush(stdin);
     fgets(nomeCidadeCarta1, 50, stdin);
+    nomeCidadeCarta1[strcspn(nomeCidadeCarta1,"\n")] = '\0';
 
     populacaoCarta1 = pegaInt("Digite o tamanho da população da cidade:");
 
@@ -111,6 +112,7 @@ void pegaCarta2() {
     printf("Digite o nome da cidade: \n");
     fflush(stdin);
     fgets(nomeCidadeCarta2, 50, stdin);
+    nomeCidadeCarta2[strcspn(nomeCidadeCarta2,"\n")] = '\0';
 
     populacaoCarta2 = pegaInt("Digite o tamanho da população da cidade:");
 
@@ -209,13 +211,22 @@ void fimJogo(void) {
 void imprime_vencedor(unsigned short int vencedor) {
     if (vencedor == 0)
         printf("Resultado: Carta 1 (%s) venceu!\n",nomeCidadeCarta1);
-    else
-        printf("Resultado: Carta 2 (%s) venceu!\n",nomeCidadeCarta2);
+    else {
+        if (vencedor == 2)
+            printf("Empate!\n");
+        else
+            printf("Resultado: Carta 2 (%s) venceu!\n",nomeCidadeCarta2);
+    }
+
 }
-void compara_cartas(char categoria[], float valorCarta1,float valorCarta2) {
+
+void compara_categoria(char categoria[], float valorCarta1,float valorCarta2) {
     unsigned short int vencedor = valorCarta1>valorCarta2;
     if (categoria == "Densidade Populacional")
         vencedor = valorCarta1<valorCarta2;
+
+    if (valorCarta1 == valorCarta2)
+        vencedor = 2;
 
     printf("Comparação de Cartas (Atributo: %s):\n",categoria);
     printf("Carta1- %s: %.2f km\n",nomeCidadeCarta1,valorCarta1);
@@ -225,15 +236,61 @@ void compara_cartas(char categoria[], float valorCarta1,float valorCarta2) {
 
 }
 
-void comparaCartas() {
-    compara_cartas("População",populacaoCarta1, populacaoCarta2);
-    compara_cartas("Área",areaCarta1, areaCarta2);
-    compara_cartas("PIB",pibCarta1, pibCarta2);
-    compara_cartas("Pontos Turísticos",pontosTuristicosCarta1, pontosTuristicosCarta2);
-    compara_cartas("Densidade Populacional",densidadePopulacionalCarta1, densidadePopulacionalCarta2);
-    compara_cartas("PIB per Capita",pibPerCapitaCarta1, pibPerCapitaCarta2);
-    compara_cartas("Super Poder",superPoderCarta1, superPoderCarta2);
+int selecionaCategoriaComparacao() {
+    int categoriaEscolhida = 0, selecionouErrada;
+    do {
+        printf("Selecione uma das categorias abaixo para comparar as cartas:\n");
+        printf("1 - População\n");
+        printf("2 - Área\n");
+        printf("3 - PIB\n");
+        printf("4 - Pontos Turísticos\n");
+        printf("5 - Densidade Populacional\n");
+        printf("6 - PIB per Capita\n");
+        printf("7 - Super Poder\n");
+        printf("Digite a opcao deseja:\n");
+        fflush(stdin);
+        scanf("%d",&categoriaEscolhida);
+        selecionouErrada = (categoriaEscolhida< 1 || categoriaEscolhida > 7);
+        if (selecionouErrada)
+            printf("Opcao invalida!\n");
+    }while (selecionouErrada);
 
+    return categoriaEscolhida;
+}
+
+void comparaCartas() {
+    int categoriaEscolhida = selecionaCategoriaComparacao();
+    switch (categoriaEscolhida) {
+        case 1: {
+            compara_categoria("População",populacaoCarta1, populacaoCarta2);
+            break;
+        }
+        case 2:{
+            compara_categoria("Área",areaCarta1, areaCarta2);
+            break;
+        }
+        case 3:{
+            compara_categoria("PIB",pibCarta1, pibCarta2);
+            break;
+        }
+        case 4:{
+            compara_categoria("Pontos Turísticos",pontosTuristicosCarta1, pontosTuristicosCarta2);
+            break;
+        }
+        case 5:{
+            compara_categoria("Densidade Populacional",densidadePopulacionalCarta1, densidadePopulacionalCarta2);
+            break;
+        }
+        case 6:{
+            compara_categoria("PIB per Capita",pibPerCapitaCarta1, pibPerCapitaCarta2);
+            break;
+        }
+        case 7:{
+            compara_categoria("Super Poder",superPoderCarta1, superPoderCarta2);
+            break;
+        }
+
+    }
 }
 int main() {
 
@@ -266,3 +323,5 @@ int main() {
     return 0;
 
 }
+
+
