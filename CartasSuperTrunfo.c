@@ -1,4 +1,8 @@
 #include <stdio.h>
+#include <string.h>
+#include <locale.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 char estadoCarta1, codigoCarta1[4] = {'0','0','0','\0'}, nomeCidadeCarta1[]={'\0'};
 int populacaoCarta1, pontosTuristicosCarta1;
@@ -258,39 +262,77 @@ int selecionaCategoriaComparacao() {
     return categoriaEscolhida;
 }
 
-void comparaCartas() {
-    int categoriaEscolhida = selecionaCategoriaComparacao();
+void selecionarCartas(int categoriaEscolhida, int *valorCarta1, int *valorCarta2, char *categoria) {
+
     switch (categoriaEscolhida) {
         case 1: {
-            compara_categoria("População",populacaoCarta1, populacaoCarta2);
+            *valorCarta1 = populacaoCarta1;
+            *valorCarta2 = populacaoCarta2;
+            *categoria = "População";
             break;
         }
         case 2:{
-            compara_categoria("Área",areaCarta1, areaCarta2);
+            *valorCarta1 = areaCarta1;
+            *valorCarta2 = areaCarta2;
+            *categoria = "Área";
             break;
         }
         case 3:{
-            compara_categoria("PIB",pibCarta1, pibCarta2);
+            *valorCarta1 = pibCarta1;
+            *valorCarta2 = pibCarta2;
+            *categoria = "PIB";
             break;
         }
         case 4:{
-            compara_categoria("Pontos Turísticos",pontosTuristicosCarta1, pontosTuristicosCarta2);
+            *valorCarta1 = pontosTuristicosCarta1;
+            *valorCarta2 = pontosTuristicosCarta2;
+            *categoria = "Pontos Turísticos";
             break;
         }
         case 5:{
-            compara_categoria("Densidade Populacional",densidadePopulacionalCarta1, densidadePopulacionalCarta2);
+            *valorCarta1 = densidadePopulacionalCarta1;
+            *valorCarta2 = densidadePopulacionalCarta2;
+            *categoria = "Densidade Populacional";
             break;
         }
         case 6:{
-            compara_categoria("PIB per Capita",pibPerCapitaCarta1, pibPerCapitaCarta2);
+            *valorCarta1 = pibPerCapitaCarta1;
+            *valorCarta2 = pibPerCapitaCarta2;
+            *categoria = "PIB per Capita";
             break;
         }
         case 7:{
-            compara_categoria("Super Poder",superPoderCarta1, superPoderCarta2);
+            *valorCarta1 = superPoderCarta1;
+            *valorCarta2 = superPoderCarta2;
+            *categoria = "Super Poder";
             break;
         }
 
     }
+}
+
+void compararCartas() {
+    int categoriaEscolhida1, valor1Carta1, valor1Carta2;
+    char categoria1[20],categoria2[20];
+    int categoriaEscolhida2, valor2Carta1, valor2Carta2;
+    
+    categoriaEscolhida1 = selecionaCategoriaComparacao();
+    pulaDuasLinhas();
+    selecionarCartas(categoriaEscolhida1, &valor1Carta1, &valor1Carta2, &categoria1);
+    compara_categoria(categoria1,valor1Carta1, valor1Carta2);
+
+    pulaDuasLinhas();
+
+    categoriaEscolhida2 = selecionaCategoriaComparacao();
+    pulaDuasLinhas();
+    selecionarCartas(categoriaEscolhida2, &valor2Carta1, &valor2Carta2, &categoria2);
+    compara_categoria(categoria2,valor2Carta1, valor2Carta2);
+    pulaDuasLinhas();
+    
+    printf("Iniciando categoria maluca: \n");
+    sleep(2);
+    compara_categoria("Categoria Maluca",valor1Carta1+valor2Carta1,valor1Carta2+valor2Carta2);
+
 }
 int main() {
 
@@ -315,7 +357,7 @@ int main() {
 
     pulaDuasLinhas();
     imprimeTexto("Agora vamos comparar as cartas:");
-    comparaCartas();
+    compararCartas();
 
     fimJogo();
 
@@ -323,5 +365,6 @@ int main() {
     return 0;
 
 }
+
 
 
