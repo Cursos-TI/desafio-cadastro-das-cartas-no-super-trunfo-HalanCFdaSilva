@@ -1,10 +1,10 @@
 #include <stdio.h>
 
-char estadoCarta1, codigoCarta1[4] = {'0','0','0','\0'}, nomeCidadeCarta1[50];
+char estadoCarta1, codigoCarta1[4] = {'0','0','0','\0'}, nomeCidadeCarta1[]={'\0'};
 int populacaoCarta1, pontosTuristicosCarta1;
 float areaCarta1, pibCarta1, densidadePopulacionalCarta1, pibPerCapitaCarta1, superPoderCarta1;
 
-char estadoCarta2, codigoCarta2[4] = {'0','0','0','\0'}, nomeCidadeCarta2[50];
+char estadoCarta2, codigoCarta2[4] = {'0','0','0','\0'}, nomeCidadeCarta2[]={'\0'};
 int populacaoCarta2, pontosTuristicosCarta2;
 float areaCarta2, pibCarta2, densidadePopulacionalCarta2, pibPerCapitaCarta2, superPoderCarta2;
 
@@ -37,6 +37,25 @@ char pegaChar(char descricao[]) {
     return valor;
 }
 
+char pega_estado_carta() {
+    char valor = pegaChar("Digite uma letra maiúscula entre A e H representando o estado:");
+    if (valor >= 'A' && valor <= 'H')
+        return valor;
+
+    imprimeTexto("Valor invalido.");
+    // mantem o loop se valor digitado não for entre A e H
+    return pega_estado_carta();
+}
+
+char pegaCodigoCarta() {
+    char valor = pegaChar("Digite um número entre 1 e 4 representando o último caracter do código:");
+    if (valor >= '1' && valor <= '4')
+        return valor;
+    imprimeTexto("Valor invalido.");
+    // mantem o loop se valor digitado não for entre 1 e 4
+    return pegaCodigoCarta();
+}
+
 void generateSuperPoderCarta1() {
     float superPoderPositivoInt = (float) (populacaoCarta1 + pontosTuristicosCarta1);
     float superPoderPositivoFloat = areaCarta1 + pibCarta1 + pibPerCapitaCarta1;
@@ -44,12 +63,12 @@ void generateSuperPoderCarta1() {
 }
 
 void pegaCarta1() {
-    estadoCarta1 = pegaChar("Digite uma letra entre A e H representando o estado:");
+    estadoCarta1 = pega_estado_carta();
 
     /*Pega os dados referentes ao código da carta
      *Pega somente os dados referentes ao último número do código
      * O segundo carácter é sempre 0 */
-    codigoCarta1[2] = pegaChar("Digite um número entre 1 e 4 representando o último caracter do código:");
+    codigoCarta1[2] = pegaCodigoCarta();
     //O primeiro carácter é o estado da carta então só cópia ele para a posição 0 do código
     codigoCarta1[0] = estadoCarta1;
 
@@ -80,7 +99,7 @@ void generateSuperPoderCarta2() {
 }
 
 void pegaCarta2() {
-    estadoCarta2 = pegaChar("Digite uma letra entre A e H representando o estado:");
+    estadoCarta2 = pega_estado_carta();
 
     /*Pega os dados referentes ao código da carta
      *Pega somente os dados referentes ao último número do código
@@ -187,25 +206,39 @@ void fimJogo(void) {
 // fim das funções para imprimir informações na tela
 
 //inicio funções de comparação
+void imprime_vencedor(unsigned short int vencedor) {
+    if (vencedor == 0)
+        printf("Resultado: Carta 1 (%s) venceu!\n",nomeCidadeCarta1);
+    else
+        printf("Resultado: Carta 2 (%s) venceu!\n",nomeCidadeCarta2);
+}
+void compara_cartas(char categoria[], float valorCarta1,float valorCarta2) {
+    unsigned short int vencedor = valorCarta1>valorCarta2;
+    if (categoria == "Densidade Populacional")
+        vencedor = valorCarta1<valorCarta2;
 
-void imprimeVencedor(char categoria[], unsigned short int comparacaoCartas) {
-    unsigned short int vencedor = (comparacaoCartas==0) + 1;
-    printf("%s: Carta %d venceu (%d)\n",categoria,vencedor,comparacaoCartas);
+    printf("Comparação de Cartas (Atributo: %s):\n",categoria);
+    printf("Carta1- %s: %.2f km\n",nomeCidadeCarta1,valorCarta1);
+    printf("Carta2- %s: %.2f km\n",nomeCidadeCarta2,valorCarta2);
+
+    imprime_vencedor(vencedor);
+
 }
 
 void comparaCartas() {
-    imprimeTexto("Comparação de Cartas:");
-    imprimeVencedor("População",populacaoCarta1>populacaoCarta2);
-    imprimeVencedor("Área",areaCarta1>areaCarta2);
-    imprimeVencedor("PIB",pibCarta1>pibCarta2);
-    imprimeVencedor("Pontos Turísticos",pontosTuristicosCarta1>pontosTuristicosCarta2);
-    imprimeVencedor("Densidade Populacional",densidadePopulacionalCarta1>densidadePopulacionalCarta2);
-    imprimeVencedor("PIB per Capita",pibPerCapitaCarta1>pibPerCapitaCarta2);
-    imprimeVencedor("Super Pode",superPoderCarta1>superPoderCarta2);
+    compara_cartas("População",populacaoCarta1, populacaoCarta2);
+    compara_cartas("Área",areaCarta1, areaCarta2);
+    compara_cartas("PIB",pibCarta1, pibCarta2);
+    compara_cartas("Pontos Turísticos",pontosTuristicosCarta1, pontosTuristicosCarta2);
+    compara_cartas("Densidade Populacional",densidadePopulacionalCarta1, densidadePopulacionalCarta2);
+    compara_cartas("PIB per Capita",pibPerCapitaCarta1, pibPerCapitaCarta2);
+    compara_cartas("Super Poder",superPoderCarta1, superPoderCarta2);
 
 }
 int main() {
 
+
+    setlocale(LC_ALL, ".UTF-8");
     // Inicio Jogo
     inicio_jogo();
 
@@ -224,10 +257,12 @@ int main() {
 // Fim Impressão
 
     pulaDuasLinhas();
+    imprimeTexto("Agora vamos comparar as cartas:");
     comparaCartas();
 
     fimJogo();
 
+    system("pause");
     return 0;
 
 }
